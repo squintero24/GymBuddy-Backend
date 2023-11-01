@@ -1,7 +1,10 @@
 package com.example.gymbuddy.controller;
 
 import com.example.gymbuddy.dto.PersonaDto;
+import com.example.gymbuddy.model.DocumentType;
+import com.example.gymbuddy.repository.IDocumentTypeRepository;
 import com.example.gymbuddy.service.interfaces.IPersonaService;
+import jakarta.persistence.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/persona")
+@CrossOrigin(origins = "*")
 public class PersonaController {
 
     @Autowired
     private IPersonaService personaService;
+
+    @Autowired
+    private IDocumentTypeRepository documentTypeRepository;
 
     @GetMapping("/all")
     public ResponseEntity<List<PersonaDto>> findAll() {
@@ -53,6 +60,19 @@ public class PersonaController {
         var deletedPerson = this.personaService.deletePerson(idPersona);
 
         return (deletedPerson) ? new ResponseEntity<>(true , HttpStatus.OK) : new ResponseEntity<>(false, HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @GetMapping("/documento/all")
+    public ResponseEntity<List<DocumentType>> findAllTypeDocument() {
+
+        var documentos = this.documentTypeRepository.findAll();
+
+        if (documentos.isEmpty()) {
+            return new ResponseEntity<>(documentos, HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(documentos, HttpStatus.OK);
+
     }
 
 }
