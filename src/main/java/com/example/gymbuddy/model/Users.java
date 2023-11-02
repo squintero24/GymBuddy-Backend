@@ -35,14 +35,14 @@ public class Users {
     @Column(name = "user_valido")
     private Long userValido;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name = "id_person", insertable = false, updatable = false)
     private Person person;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "users", orphanRemoval = true)
     private List<UserRoles> userRoles;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "users")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "users", orphanRemoval = true)
     private UserPlans userPlans;
 
 }
