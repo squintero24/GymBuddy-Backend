@@ -23,6 +23,11 @@ public interface IUsuarioMapper {
     @Mapping(target = "username", source = "userName")
     @Mapping(target = "passwd", source = "password")
     @Mapping(target = "roles", source = "userRoles", qualifiedByName = "userRolMapping")
+    @Mapping(target = "name", source = "person.name")
+    @Mapping(target = "lastName", source = "person.lastName")
+    @Mapping(target = "email", source = "person.email")
+    @Mapping(target = "photo", source = "person.photo")
+    @Mapping(target = "phoneNumber", source = "person.phoneNumber")
     UsuarioDto toUsuarioDto(Users users);
 
     @Mapping(target = "userName", source = "username")

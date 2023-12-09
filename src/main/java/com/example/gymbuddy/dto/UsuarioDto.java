@@ -24,6 +24,17 @@ public class UsuarioDto {
 
     private List<RolesDto> roles;
 
+    private String name;
+
+    private String lastName;
+
+    private String email;
+
+    private String phoneNumber;
+
+    private String photo;
+
+
 
 
 }
