@@ -20,9 +20,33 @@ public class EntrenamientoServiceImpl implements IEntrenamientoService {
 
     @Override
     public List<TrainingDto> findAllTrainings() {
-        return this.entrenamientoRepository.findAll().stream()
+        var entrenamientosDto = this.entrenamientoRepository.findAll().stream()
                 .map(IEntrenamientoMapper.INSTANCE::toTrainingDto)
                 .collect(Collectors.toList());
+        entrenamientosDto.stream()
+                .forEach(
+                        entrenamiento -> {
+                            try {
+                                //Se puede actualizar o agregar personas?
+                                if (fechaAcomparacionFechaB(entrenamiento.getInicioClase(), new Date(), ">=")) {
+                                    entrenamiento.setCanUpdateOrAdd(false);
+                                } else {
+                                    entrenamiento.setCanUpdateOrAdd(true);
+                                }
+                                //Se puede borrar?
+                                if (fechaAcomparacionFechaB(entrenamiento.getInicioClase(), new Date(), ">=")
+                                    && entrenamiento.getUsuarioInscritos().size() == 0) {
+                                    entrenamiento.setCanDelete(false);
+                                } else {
+                                    entrenamiento.setCanDelete(true);
+                                }
+
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                );
+        return entrenamientosDto;
     }
 
     @Override

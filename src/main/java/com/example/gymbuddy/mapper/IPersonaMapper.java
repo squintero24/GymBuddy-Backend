@@ -24,6 +24,8 @@ public interface IPersonaMapper {
     @Mapping(target = "nombreUsuario", source = "user.userName")
     @Mapping(target = "userValido", source = "user.userValido")
     @Mapping(target = "rolPersona", source = "user.userRoles", qualifiedByName = "userRolMapping")
+    @Mapping(target = "idPlan", source = "user.userPlans.plans.id")
+    @Mapping(target = "idTipoDocumento", source = "user.person.idTypeDocument")
     @Mapping(target = "fechaDesdePlan", source = "user.userPlans.startDate")
     @Mapping(target = "fechaHastaPlan", source = "user.userPlans.endDate")
     PersonaDto toPersonaDto(Person person);

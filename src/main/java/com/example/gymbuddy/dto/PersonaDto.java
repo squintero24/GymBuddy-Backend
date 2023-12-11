@@ -43,7 +43,11 @@ public class PersonaDto {
 
     private List<RolesDto> rolPersona;
 
+    private Long idRolUsuario;
+
     private Long idRol;
+
+    private Long idPlanUsuario;
 
     private Long idPlan;
 

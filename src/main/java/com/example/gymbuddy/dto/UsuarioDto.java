@@ -14,6 +14,8 @@ public class UsuarioDto {
 
     private Long id;
 
+    private Long idPerson;
+
     private String username;
 
     private String passwd;

@@ -28,6 +28,7 @@ public interface IUsuarioMapper {
     @Mapping(target = "email", source = "person.email")
     @Mapping(target = "photo", source = "person.photo")
     @Mapping(target = "phoneNumber", source = "person.phoneNumber")
+    @Mapping(target = "idPerson", source = "idPerson")
     UsuarioDto toUsuarioDto(Users users);
 
     @Mapping(target = "userName", source = "username")

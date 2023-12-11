@@ -24,6 +24,11 @@ public class TrainingDto {
 
     private String foto;
 
+    private Boolean canUpdateOrAdd;
+
+    private Boolean canDelete;
+
+
     private List<UserTrainingDto> usuarioInscritos;
 
 }

@@ -23,4 +23,6 @@ public class PlanDto {
 
     private Date updateDate;
 
+    private Long numeroUsuarioPlan;
+
 }
