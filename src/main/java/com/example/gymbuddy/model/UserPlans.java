@@ -37,7 +37,7 @@ public class UserPlans {
     @Column(name = "id_prorroga")
     private Long idProrroga;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", updatable = false,insertable = false)
     private Users users;
 

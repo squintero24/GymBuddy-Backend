@@ -1,6 +1,5 @@
 package com.example.gymbuddy.dto;
 
-import com.example.gymbuddy.model.Roles;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,8 +40,6 @@ public class PersonaDto {
 
     private Long userValido;
 
-    private List<RolesDto> rolPersona;
-
     private Long idRolUsuario;
 
     private Long idRol;
@@ -51,7 +48,15 @@ public class PersonaDto {
 
     private Long idPlan;
 
+    private List<UserPlanDto> plansDto;
+
     private Date fechaDesdePlan;
 
     private Date fechaHastaPlan;
+
+    private Boolean extenderPlan;
+
+    private Boolean cambiarPlan;
+
+    private Boolean cambiarRol;
 }

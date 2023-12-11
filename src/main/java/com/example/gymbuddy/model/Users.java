@@ -42,7 +42,7 @@ public class Users {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "users", orphanRemoval = true)
     private List<UserRoles> userRoles;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "users", orphanRemoval = true)
-    private UserPlans userPlans;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users", orphanRemoval = true)
+    private List<UserPlans> userPlans;
 
 }

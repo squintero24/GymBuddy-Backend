@@ -28,6 +28,9 @@ public class UserRoles {
     @Column(name = "creation_date")
     private Date creationDate;
 
+    @Column(name = "end_date")
+    private Date endDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_role", insertable = false, updatable = false)
     private Roles roles;
