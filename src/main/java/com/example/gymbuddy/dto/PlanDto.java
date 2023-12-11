@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
@@ -24,5 +25,7 @@ public class PlanDto {
     private Date updateDate;
 
     private Long numeroUsuarioPlan;
+
+    private List<UserPlanDto> usuariosPlan;
 
 }
