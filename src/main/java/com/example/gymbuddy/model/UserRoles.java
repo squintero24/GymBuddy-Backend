@@ -1,5 +1,6 @@
 package com.example.gymbuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,10 +34,12 @@ public class UserRoles {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_role", insertable = false, updatable = false)
+    @JsonIgnore
     private Roles roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", updatable = false,insertable = false)
+    @JsonIgnore
     private Users users;
 
 

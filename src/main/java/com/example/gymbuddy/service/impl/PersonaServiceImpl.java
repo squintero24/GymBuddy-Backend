@@ -2,6 +2,7 @@ package com.example.gymbuddy.service.impl;
 
 import com.example.gymbuddy.dto.PersonaDto;
 import com.example.gymbuddy.mapper.IPersonaMapper;
+import com.example.gymbuddy.model.Person;
 import com.example.gymbuddy.model.UserPlans;
 import com.example.gymbuddy.model.UserRoles;
 import com.example.gymbuddy.model.Users;
@@ -146,30 +147,27 @@ public class PersonaServiceImpl implements IPersonaService {
 
     }
 
-    @Override
-    public PersonaDto updatePerson(PersonaDto personaDto) throws Exception {
-
+     public Person setAtributesPerson(PersonaDto personaDto) throws Exception{
         var personaBD = this.personRepository.findById(personaDto.getId()).orElseThrow(Exception::new);
 
-        personaBD.setAddress(personaDto.getAddress());
-        personaBD.setEmail(personaDto.getEmail());
-        personaBD.setName(personaDto.getName());
-        personaBD.setLastName(personaDto.getLastName());
-        personaBD.setBirthDate(personaDto.getBirthDate());
-        personaBD.setIdTypeDocument(personaDto.getIdTipoDocumento());
-        personaBD.setNumDocument(personaDto.getNumDocument());
-        personaBD.setNeighborhood(personaDto.getNeighborhood());
-        personaBD.setPhoto(personaDto.getPhoto());
-        personaBD.setPhoneNumber(personaDto.getPhoneNumber());
-        personaBD.setAddress(personaDto.getAddress());
+         personaBD.setAddress(personaDto.getAddress());
+         personaBD.setEmail(personaDto.getEmail());
+         personaBD.setName(personaDto.getName());
+         personaBD.setLastName(personaDto.getLastName());
+         personaBD.setBirthDate(personaDto.getBirthDate());
+         personaBD.setIdTypeDocument(personaDto.getIdTipoDocumento());
+         personaBD.setNumDocument(personaDto.getNumDocument());
+         personaBD.setNeighborhood(personaDto.getNeighborhood());
+         personaBD.setPhoto(personaDto.getPhoto());
+         personaBD.setPhoneNumber(personaDto.getPhoneNumber());
+         personaBD.setAddress(personaDto.getAddress());
 
-        var personaUpdated = this.personRepository.save(personaBD);
+         return personaBD;
 
-
-        return IPersonaMapper.INSTANCE.toPersonaDto(personaUpdated);
-    }
+     }
 
     @Override
+    @Transactional
     public Boolean deletePerson(Long idPersona) {
         var personaToDelete = this.personRepository.findById(idPersona);
 
@@ -179,5 +177,69 @@ public class PersonaServiceImpl implements IPersonaService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    @Transactional
+    public PersonaDto updatePerson(PersonaDto personaDto) throws Exception {
+
+        var personaBD = this.setAtributesPerson(personaDto);
+
+        var personaUpdated = this.personRepository.save(personaBD);
+
+        if(personaDto.getCambiarRol()){
+            var rolActualBD = this.userRoleRepository.findById(personaDto.getIdRolUsuario()).orElseThrow(Exception::new);
+
+            rolActualBD.setEndDate(new Date());
+
+            var newRol = new UserRoles();
+
+            newRol.setIdUser(personaDto.getIdUsuario());
+            newRol.setIdRol(personaDto.getIdRol());
+            newRol.setCreationDate(new Date());
+
+            //Se guarda el nuevo rol
+            this.userRoleRepository.saveAll(List.of(newRol,rolActualBD));
+        }
+
+        if(personaDto.getExtenderPlan() && !personaDto.getCambiarPlan()) {
+            var planActual = this.userPlanRepository.findById(personaDto.getIdPlanUsuario()).orElseThrow(Exception::new);
+
+            //Se coloca fecha actual en fechahasta en el plan que decidio alargar
+            planActual.setEndDate(new Date());
+
+
+            //nuevo plan que depende del anterior
+            var newPlan  = new UserPlans();
+
+            newPlan.setIdPlan(planActual.getIdPlan());
+            newPlan.setIdUser(planActual.getIdUser());
+            newPlan.setCreationDate(new Date());
+            newPlan.setIdProrroga(planActual.getId());
+            newPlan.setStartDate(personaDto.getFechaDesdePlan());
+            newPlan.setEndDate(personaDto.getFechaHastaPlan());
+
+            this.userPlanRepository.saveAll(List.of(planActual,newPlan));
+        }
+
+        if(personaDto.getCambiarPlan() && !personaDto.getExtenderPlan()) {
+            var planActual = this.userPlanRepository.findById(personaDto.getIdPlanUsuario()).orElseThrow(Exception::new);
+            //Se coloca fecha actual en fechahasta en el plan que decidio alargar
+            planActual.setEndDate(new Date());
+
+            //nuevo plan que depende del anterior
+            var newPlan  = new UserPlans();
+
+            newPlan.setIdPlan(personaDto.getIdPlan());
+            newPlan.setIdUser(planActual.getIdUser());
+            newPlan.setCreationDate(new Date());
+            newPlan.setStartDate(personaDto.getFechaDesdePlan());
+            newPlan.setEndDate(personaDto.getFechaHastaPlan());
+
+            this.userPlanRepository.saveAll(List.of(planActual,newPlan));
+
+        }
+
+        return IPersonaMapper.INSTANCE.toPersonaDto(personaUpdated);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.gymbuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,9 +40,11 @@ public class UserPlans {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", updatable = false,insertable = false)
+    @JsonIgnore
     private Users users;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_plan", updatable = false,insertable = false)
+    @JsonIgnore
     private Plans plans;
 }
