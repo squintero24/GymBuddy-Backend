@@ -1,7 +1,10 @@
 package com.example.gymbuddy.controller;
 
 import com.example.gymbuddy.dto.TrainingDto;
+import com.example.gymbuddy.dto.UserTrainingDto;
+import com.example.gymbuddy.model.UserTraining;
 import com.example.gymbuddy.service.interfaces.IEntrenamientoService;
+import com.example.gymbuddy.service.interfaces.IUserTrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,8 @@ public class EntrenamientoController {
 
     @Autowired
     private IEntrenamientoService entrenamientoService;
+    @Autowired
+    private IUserTrainingService userTrainingService;
 
     @GetMapping("/all")
     public ResponseEntity<List<TrainingDto>> findAll() {
@@ -57,6 +62,16 @@ public class EntrenamientoController {
         var deletedEntrenamiento = this.entrenamientoService.eliminarEntrenamiento(idClase);
 
         return (deletedEntrenamiento) ? new ResponseEntity<>(true, HttpStatus.OK) : new ResponseEntity<>(false, HttpStatus.EXPECTATION_FAILED);
+    }
+    @PostMapping("/inscribir")
+    public ResponseEntity<?> addUserToTraining(@RequestBody UserTraining userTraining) throws  Exception{
+        try {
+            UserTrainingDto userTrainingDto = userTrainingService.addUserToTraining(userTraining);
+            return ResponseEntity.ok(userTrainingDto);
+        } catch (Exception e) {
+            // Manejar la excepción apropiadamente
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
 
